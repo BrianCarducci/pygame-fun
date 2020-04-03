@@ -1,4 +1,5 @@
 import pygame
+# from entities import *
 pygame.init()
 
 SCREEN_WIDTH = 500
@@ -18,9 +19,17 @@ is_jump = False
 jump_count = 10
 jump_coeff = -1
 
+entities = Player()
+
+# def draw(entities):
+#     for entity in entities:
+#         win.fill((0, 0, 0))
+#         pygame.draw.
+
+
 run = True
 while run:
-    pygame.time.delay(50)
+    pygame.time.delay(25)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
