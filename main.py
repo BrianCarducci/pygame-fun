@@ -1,41 +1,76 @@
 import pygame
-from entities import player
-pygame.init()
+import pygame.freetype
+import setup
 
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
+from state import State
+from entities.player import Player
 
-win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("My Game")
-pygame.init()
+def main():
+    pygame.init()
 
-width = 40
-height = 60
-x = 250
-y = SCREEN_HEIGHT - height
-vel = 15
+    # myFont = pygame.font.SysFont("Comic Sans MS", 30)
 
-the_player = player.Player(x, y, width, height, vel, False, 10)
-entities = [the_player]
+    # GAME_FONT = pygame.freetype.Font("", 24)
+
+    GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
+
+    SCREEN_WIDTH = 500
+    SCREEN_HEIGHT = 500
+
+    game_state = State.PLAYING
 
 
-def draw(entities):
+    win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("My Game")
+    pygame.init()
+
+    width = 40
+    height = 60
+    x = 250
+    y = SCREEN_HEIGHT - height
+    vel = 15
+
+    player = Player(x, y, width, height, vel, False, 10)
+    entities = [player]
+
+    text_surface = None
+    
+    run = True
+    while run:
+        pygame.time.delay(25)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    if game_state == State.PLAYING:
+                        game_state = State.PAUSED
+                        text_surface = GAME_FONT.render("Hello World!", True, (255, 0, 0))
+                        print("paused") 
+                    elif game_state == State.PAUSED:
+                        game_state = State.PLAYING
+                        text_surface = None
+                        print("playing")
+        
+        keys = pygame.key.get_pressed()
+
+        player.check_player_actions(keys, "playing", SCREEN_WIDTH)
+        draw(entities, text_surface, win)
+
+    pygame.quit()
+
+
+def draw(entities, text_surface, win):
     for entity in entities:
         win.fill((0, 0, 0))
         pygame.draw.rect(win, (255, 0, 0), (entity.x, entity.y, entity.width, entity.height))
-        pygame.display.update()
 
+    if text_surface:
+        win.blit(text_surface, (0, 0))
+    
+    pygame.display.update()
 
-run = True
-while run:
-    pygame.time.delay(25)
+if __name__ == "__main__":
+    main()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    keys = pygame.key.get_pressed()
-    the_player.check_player_actions(keys, "playing", SCREEN_WIDTH)
-    draw(entities)
-
-pygame.quit()
