@@ -34,7 +34,7 @@ def main():
     entities = [player]
 
     text_surface = None
-    
+
     run = True
     while run:
         pygame.time.delay(25)
@@ -46,16 +46,14 @@ def main():
                 if event.key == pygame.K_RETURN:
                     if game_state == State.PLAYING:
                         game_state = State.PAUSED
-                        text_surface = GAME_FONT.render("Hello World!", True, (255, 0, 0))
-                        print("paused") 
+                        text_surface = GAME_FONT.render("Paused", True, (255, 0, 0))
                     elif game_state == State.PAUSED:
                         game_state = State.PLAYING
                         text_surface = None
-                        print("playing")
         
         keys = pygame.key.get_pressed()
 
-        player.check_player_actions(keys, "playing", SCREEN_WIDTH)
+        player.check_player_actions(keys, game_state, SCREEN_WIDTH)
         draw(entities, text_surface, win)
 
     pygame.quit()
@@ -67,9 +65,10 @@ def draw(entities, text_surface, win):
         pygame.draw.rect(win, (255, 0, 0), (entity.x, entity.y, entity.width, entity.height))
 
     if text_surface:
-        win.blit(text_surface, (0, 0))
-    
+        win.blit(text_surface, (250, 250))
+
     pygame.display.update()
+
 
 if __name__ == "__main__":
     main()

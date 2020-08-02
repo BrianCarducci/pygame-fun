@@ -1,5 +1,6 @@
-from entities.entity import Entity
 import pygame
+from state import State
+from entities.entity import Entity
 
 
 class Player(Entity):
@@ -9,7 +10,7 @@ class Player(Entity):
         super().__init__(x, y, width, height, vel)
 
     def check_player_actions(self, keys, game_state, screen_width):
-        if game_state != "paused":
+        if game_state != State.PAUSED:
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 if self.x > self.vel:
                     self.x -= self.vel
