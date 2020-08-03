@@ -14,7 +14,7 @@ def main():
 
     # GAME_FONT = pygame.freetype.Font("", 24)
 
-    os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
+    # os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
 
     GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
 
@@ -24,12 +24,12 @@ def main():
 
     game_state = State.PLAYING
 
-    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
+    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("My Game")
     pygame.init()
 
-    width = WINDOW_WIDTH/16
-    height = WINDOW_HEIGHT/16
+    width = WINDOW_WIDTH/18
+    height = WINDOW_HEIGHT/14
     x = 250
     y = WINDOW_HEIGHT - height
     vel = 15
