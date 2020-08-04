@@ -1,8 +1,8 @@
 import os
 import pygame
 import pyautogui
-import setup
 
+from setup import setup
 from state import State
 from entities.player import Player
 
@@ -16,8 +16,7 @@ def main():
 
     # os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
 
-    GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
-
+    # GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
     # WINDOW_WIDTH = 500
     # WINDOW_HEIGHT = 500
     WINDOW_WIDTH, WINDOW_HEIGHT = pyautogui.size()
@@ -25,6 +24,11 @@ def main():
     game_state = State.PLAYING
 
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.FULLSCREEN)
+
+    GAME_FONT, background = setup()
+    background_x = 0
+    background_x2 = background.get_width()
+
     pygame.display.set_caption("My Game")
     pygame.init()
 
@@ -63,14 +67,17 @@ def main():
         keys = pygame.key.get_pressed()
 
         player.check_player_actions(keys, game_state, WINDOW_WIDTH)
-        draw(entities, text_surface, win, WINDOW_WIDTH, WINDOW_HEIGHT)
+        draw(entities, background, text_surface, win, WINDOW_WIDTH, WINDOW_HEIGHT)
 
     pygame.quit()
 
 
-def draw(entities, text_surface, win, window_width, window_height):
+def draw(entities, background, text_surface, win, window_width, window_height):
+    
     for entity in entities:
-        win.fill((0, 0, 0))
+        win.blit(background, (0, window_height))
+        win.blit(background, (background.get_width(), window_height))
+        # win.fill((0, 0, 0))
         pygame.draw.rect(win, (255, 0, 0), (entity.x, entity.y, entity.width, entity.height))
 
     if text_surface:

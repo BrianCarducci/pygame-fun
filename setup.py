@@ -1,6 +1,7 @@
+import os
 import pygame
 
 def setup():
-    font = pygame.font.SysFont(None, 24)
-    text_surface = font.render("Paused", True, (225, 0, 0), background=None)
-    return text_surface
+    bg = pygame.image.load(os.path.join("assets", "backgrounds" ,"bg.png")).convert()
+    font = pygame.font.Font(pygame.font.get_default_font(), 25)
+    return font, bg
