@@ -4,7 +4,8 @@ from entities.entity import Entity
 
 
 class Player(Entity):
-    def __init__(self, x, y, width, height, vel, is_jumping, jump_count):
+    def __init__(self, x, y, width, height, vel, stage_location, is_jumping, jump_count):
+        self.stage_location = stage_location
         self.is_jumping = is_jumping
         self.jump_count = jump_count
         super().__init__(x, y, width, height, vel)
@@ -14,13 +15,18 @@ class Player(Entity):
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 # if self.x > self.vel:
                 # self.x -= self.vel
-                background_x += self.vel
-                background_x2 += self.vel
+                if self.stage_location > self.x:
+                    self.stage_location -= self.vel
+                    background_x += self.vel
+                    background_x2 += self.vel
+                    print("x: " + str(self.x) + ", stage_location: " + str(self.stage_location))
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 # if self.x <= screen_width - self.width - self.vel:
                 # self.x += self.vel
+                self.stage_location += self.vel
                 background_x -= self.vel
                 background_x2 -= self.vel
+                print("x: " + str(self.x) + ", stage_location: " + str(self.stage_location))
             if not self.is_jumping:
                 if keys[pygame.K_SPACE]:
                     self.is_jumping = True

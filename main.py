@@ -10,15 +10,9 @@ from entities.player import Player
 def main():
     pygame.init()
 
-    # myFont = pygame.font.SysFont("Comic Sans MS", 30)
-
-    # GAME_FONT = pygame.freetype.Font("", 24)
-
     # os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
 
     # GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
-    # WINDOW_WIDTH = 500
-    # WINDOW_HEIGHT = 500
     # WINDOW_WIDTH, WINDOW_HEIGHT = pyautogui.size()
     WINDOW_WIDTH, WINDOW_HEIGHT = 800, 447
 
@@ -26,22 +20,14 @@ def main():
 
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
 
-    GAME_FONT, background = setup()
+    GAME_FONT, background, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
     background_x = 0
     background_x2 = background.get_width()
 
     pygame.display.set_caption("My Game")
     pygame.init()
 
-    width = WINDOW_WIDTH/18
-    height = WINDOW_HEIGHT/14
-    x = 250
-    y = WINDOW_HEIGHT - height
-    vel = 15
-
-    player = Player(x, y, width, height, vel, False, 10)
-    entities = [player]
-
+    player = entities[0]
     text_surface = None
 
     run = True
