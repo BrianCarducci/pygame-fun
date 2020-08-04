@@ -16,18 +16,16 @@ def main():
     # WINDOW_WIDTH, WINDOW_HEIGHT = pyautogui.size()
     WINDOW_WIDTH, WINDOW_HEIGHT = 800, 447
 
-    game_state = State.PLAYING
-
     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
 
-    GAME_FONT, background, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
+    game_state, GAME_FONT, background, player, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
     background_x = 0
     background_x2 = background.get_width()
 
     pygame.display.set_caption("My Game")
     pygame.init()
 
-    player = entities[0]
+    # player = entities[0]
     text_surface = None
 
     run = True
@@ -49,7 +47,6 @@ def main():
             if event.type == pygame.VIDEORESIZE:
                 WINDOW_WIDTH = event.w
                 WINDOW_HEIGHT = event.h
-                print("resize event: " + str(WINDOW_WIDTH) + ", " + str(WINDOW_HEIGHT))
                 
         keys = pygame.key.get_pressed()
 
@@ -60,18 +57,24 @@ def main():
 
         if background_x2 < background.get_width() * -1:
             background_x2 = background.get_width()
-        draw(entities, background, text_surface, win, WINDOW_WIDTH, WINDOW_HEIGHT, background_x, background_x2)
+
+        draw(player, entities, background, text_surface, win, WINDOW_WIDTH, WINDOW_HEIGHT, background_x, background_x2)
 
     pygame.quit()
 
 
-def draw(entities, background, text_surface, win, window_width, window_height, background_x, background_x2):
+def draw(player, entities, background, text_surface, win, window_width, window_height, background_x, background_x2):
     win.fill((0, 0, 0))
 
+    win.blit(background, (background_x, 0))
+    win.blit(background, (background_x2, 0))
+
+    pygame.draw.rect(win, player.sprite, player.hitbox)
+
     for entity in entities:
-        win.blit(background, (background_x, 0))
-        win.blit(background, (background_x2, 0))
-        pygame.draw.rect(win, (255, 0, 0), (entity.x, entity.y, entity.width, entity.height))
+        # win.blit(background, (background_x, 0))
+        # win.blit(background, (background_x2, 0))
+        pygame.draw.rect(win, entity.sprite, entity.hitbox)
 
     if text_surface:
         w, h = pygame.display.get_surface().get_size()
