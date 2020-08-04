@@ -50,7 +50,8 @@ def main():
                 
         keys = pygame.key.get_pressed()
 
-        background_x, background_x2 = player.check_player_actions(keys, game_state, WINDOW_WIDTH, background_x, background_x2)
+        player.check_player_collisions(entities)
+        background_x, background_x2 = player.check_player_actions(entities, keys, game_state, WINDOW_WIDTH, background_x, background_x2)
 
         if background_x < background.get_width() * -1:
             background_x = background.get_width()

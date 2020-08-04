@@ -31,6 +31,6 @@ def setup(window_width, window_height):
 
     #set up player
     # player = Player(window_width//2, y, width, height, vel, (255, 0, 0), entities, window_width//2, False, 10)
-    player = Player(pygame.Rect(window_width//2, y, width, height), vel, (255, 0, 0), entities, window_width//2, False, 10)
+    player = Player(pygame.Rect(window_width//2, y, width, height), vel, (255, 0, 0), window_width//2, False, 10)
 
     return game_state, font, bg, player, entities
