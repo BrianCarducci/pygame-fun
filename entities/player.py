@@ -9,14 +9,18 @@ class Player(Entity):
         self.jump_count = jump_count
         super().__init__(x, y, width, height, vel)
 
-    def check_player_actions(self, keys, game_state, screen_width):
+    def check_player_actions(self, keys, game_state, screen_width, background_x, background_x2):
         if game_state != State.PAUSED:
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                if self.x > self.vel:
-                    self.x -= self.vel
+                # if self.x > self.vel:
+                # self.x -= self.vel
+                background_x += self.vel
+                background_x2 += self.vel
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                if self.x <= screen_width - self.width - self.vel:
-                    self.x += self.vel
+                # if self.x <= screen_width - self.width - self.vel:
+                # self.x += self.vel
+                background_x -= self.vel
+                background_x2 -= self.vel
             if not self.is_jumping:
                 if keys[pygame.K_SPACE]:
                     self.is_jumping = True
@@ -27,4 +31,5 @@ class Player(Entity):
                 else:
                     self.is_jumping = False
                     self.jump_count = 10
+        return background_x, background_x2
 
