@@ -12,7 +12,7 @@ def setup(window_width, window_height):
     height = window_height/14
     # x = 250
     y = window_height - height
-    vel = 15
+    vel = 5
     game_state = State.PLAYING
     # set up background
     bg = pygame.image.load(os.path.join("assets", "backgrounds" ,"bg.png")).convert()
