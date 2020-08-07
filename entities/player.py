@@ -18,6 +18,7 @@ class Player(Entity):
         super().__init__(hitbox, vel, sprite)
 
     def check_player_actions(self, entities, keys, game_state, screen_width, background_x, background_x2):
+        print(self.hitbox.bottom)
         if game_state != State.PAUSED:
             self.check_player_collisions(entities)
             # Probs check here for collision with enemies and stuff
@@ -42,9 +43,12 @@ class Player(Entity):
                     self.is_jumping = True
             else:
                 if self.jump_count >= -10:
-                    if {"collision_side": "right", "colliding_entity": Platform} not in self.collisions:
+                    if {"collision_side": "bottom", "colliding_entity": Platform} not in self.collisions:
                         self.hitbox.y -= self.jump_count
                         self.jump_count -= 1
+                    else:
+                        self.is_jumping = False
+                        self.jump_count = 10
                 else:
                     self.is_jumping = False
                     self.jump_count = 10
@@ -55,13 +59,12 @@ class Player(Entity):
         self.collisions = []
         for entity in entities:
             if self.hitbox.colliderect(entity.hitbox):
-                print("colliding")
-                if self.hitbox.right > entity.hitbox.right:
+                if self.hitbox.bottom <= entity.hitbox.top + 10:
+                     self.collision_side = "bottom"
+                elif self.hitbox.right > entity.hitbox.right:
                     self.collision_side = "left"
                 elif self.hitbox.left - self.vel < entity.hitbox.left:
                     self.collision_side = "right"
-                if self.hitbox.bottom >= entity.hitbox.top:
-                    self.collision_side = "bottom"
                 if isinstance(entity, Platform):
                     self.colliding_entity = Platform
                 self.collisions.append(
