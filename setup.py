@@ -23,6 +23,7 @@ def setup(window_width, window_height):
     # set up environment
     # floor = Platform(700, y, width, height, 0, (0, 255, 0), 1200)
     floor_1 = Platform(pygame.Rect(0, floor_y, 1000, height), 0, (0, 255, 0), 700)
+    ledge = Platform(pygame.Rect(700, floor_y - height, 200, height), 0, (0, 0, 255), 700)
 
     # set up NPCs
 
@@ -31,6 +32,6 @@ def setup(window_width, window_height):
 
     #set up player
     # player = Player(window_width//2, y, width, height, vel, (255, 0, 0), entities, window_width//2, False, 10)
-    player = Player(pygame.Rect(window_width//2, floor_y - height, width, height), vel, (255, 0, 0), window_width//2, False, 10)
+    player = Player(pygame.Rect(window_width//2, floor_y - height - 200, width, height), vel, (255, 0, 0), window_width//2, False, 10)
 
     return game_state, font, bg, player, entities
