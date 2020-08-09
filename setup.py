@@ -36,3 +36,6 @@ def setup(window_width, window_height):
     player = Player(pygame.Rect(window_width//2, floor_y - height - 200, width, height), vel, (255, 0, 0), window_width//2, False, 10)
 
     return game_state, font, bg, player, entities
+
+def resolution_change(curr_resolution, new_resolution, entities):
+    return

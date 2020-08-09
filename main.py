@@ -10,13 +10,14 @@ from entities.player import Player
 def main():
     pygame.init()
 
-    # os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
+    os.environ['SDL_VIDEO_WINDOW_POS'] = str(0) + "," + str(20)
 
     # GAME_FONT = pygame.font.Font(pygame.font.get_default_font(), 25)
     # WINDOW_WIDTH, WINDOW_HEIGHT = pyautogui.size()
-    WINDOW_WIDTH, WINDOW_HEIGHT = 800, 447
-
-    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
+    # WINDOW_WIDTH, WINDOW_HEIGHT = 800, 447
+    # WINDOW_WIDTH, WINDOW_HEIGHT = 1920, 1080
+    WINDOW_WIDTH, WINDOW_HEIGHT = 2560, 1440
+    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
     game_state, GAME_FONT, background, player, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
     background_x = 0
@@ -44,13 +45,23 @@ def main():
                     elif game_state == State.PAUSED:
                         game_state = State.PLAYING
                         text_surface = None
-            if event.type == pygame.VIDEORESIZE:
-                WINDOW_WIDTH = event.w
-                WINDOW_HEIGHT = event.h
+                if event.key == pygame.K_ESCAPE:
+                    if WINDOW_WIDTH == 2560:
+                        WINDOW_WIDTH, WINDOW_HEIGHT = 1920, 1080
+                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    else:
+                        WINDOW_WIDTH, WINDOW_HEIGHT = 2560, 1440
+                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+            # if event.type == pygame.VIDEORESIZE:
+            #     WINDOW_WIDTH = event.w
+            #     WINDOW_HEIGHT = event.h
                 
         keys = pygame.key.get_pressed()
 
         player.check_player_collisions(entities)
+        if player.is_dead(WINDOW_HEIGHT):
+            game_state, GAME_FONT, background, player, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
+
         background_x, background_x2 = player.check_player_actions(entities, keys, game_state, WINDOW_WIDTH, background_x, background_x2)
 
         if background_x < background.get_width() * -1:
