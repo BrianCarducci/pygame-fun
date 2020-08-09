@@ -23,12 +23,13 @@ def setup(window_width, window_height):
     # set up environment
     # floor = Platform(700, y, width, height, 0, (0, 255, 0), 1200)
     floor_1 = Platform(pygame.Rect(0, floor_y, 1000, height), 0, (0, 255, 0), 700)
+    floor_2 = Platform(pygame.Rect(1200, floor_y, 1000, height), 0, (0, 255, 0), 700)
     ledge = Platform(pygame.Rect(700, floor_y - height, 200, height), 0, (0, 0, 255), 700)
 
     # set up NPCs
 
     # initialize array of all entities, which will be iterated through and drawn each game loop tick
-    entities = [floor_1]
+    entities = [floor_1, ledge, floor_2]
 
     #set up player
     # player = Player(window_width//2, y, width, height, vel, (255, 0, 0), entities, window_width//2, False, 10)

@@ -23,7 +23,9 @@ class Player(Entity):
             
             # Check if falling
             if not self.is_jumping and {"collision_side": "bottom", "colliding_entity": Platform} not in self.collisions:
-                self.hitbox.y += 10
+                self.hitbox.y += 5
+            else:
+                self.hitbox.y = self.hitbox.y
 
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 if {"collision_side": "left", "colliding_entity": Platform} not in self.collisions:
@@ -47,15 +49,25 @@ class Player(Entity):
                     self.is_jumping = True
             else:
                 if self.jump_count >= -10:
-                    if {"collision_side": "bottom", "colliding_entity": Platform} not in self.collisions:
-                        self.hitbox.y -= self.jump_count
-                        self.jump_count -= 1
-                    else:
-                        self.is_jumping = False
-                        self.jump_count = 10
+                    self.hitbox.y -= self.jump_count
+                    self.jump_count -= 1
+                    if self.jump_count <= 0:
+                        if {"collision_side": "bottom", "colliding_entity": Platform} in self.collisions:
+                            self.is_jumping = False
+                            self.jump_count = 10
                 else:
                     self.is_jumping = False
                     self.jump_count = 10
+                # if self.jump_count >= -10:
+                #     if {"collision_side": "bottom", "colliding_entity": Platform} not in self.collisions:
+                #         self.hitbox.y -= self.jump_count
+                #         self.jump_count -= 1
+                #     else:
+                #         self.is_jumping = False
+                #         self.jump_count = 10
+                # else:
+                #     self.is_jumping = False
+                #     self.jump_count = 10
                     
         return background_x, background_x2
 
@@ -65,7 +77,6 @@ class Player(Entity):
         for entity in entities:
             if self.hitbox.colliderect(entity.hitbox):
                 if self.hitbox.bottom <= entity.hitbox.top + 10:
-                    print("bottom collide")
                     self.collision_side = "bottom"
                 elif self.hitbox.right > entity.hitbox.right:
                     self.collision_side = "left"
