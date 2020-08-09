@@ -37,5 +37,30 @@ def setup(window_width, window_height):
 
     return game_state, font, bg, player, entities
 
-def resolution_change(curr_resolution, new_resolution, entities):
-    return
+def change_resolution(curr_window_width, new_window_width, entities, player):
+    scalar = 0
+    if curr_window_width == 2560 and new_window_width == 1920:
+        scalar = 0.75
+    new_entities = [_scale_entity(entity, scalar) for entity in entities]
+    # for entity in entities:
+        # entity.hitbox = pygame.rect(
+        #     entity.hitbox.x*scalar,
+        #     entity.hitbox.y*scalar,
+        #     entity.hitbox.w*scalar,
+        #     entity.hitbox.h*scalar
+        # )
+        # if isinstance(entity, Platform):
+        #     entity = Platform(pygame.Rect(entity.hitbox.x*scalar, entity.hitbox.y*scalar, entity.hitbox.w*scalar, entity.hitbox.h*scalar), entity.vel, entity.sprite, entity.stage_location)
+    player = Player(pygame.Rect(player.hitbox.x*scalar, player.hitbox.y*scalar, player.hitbox.w*scalar, player.hitbox.h*scalar), player.vel, player.sprite, player.stage_location*scalar, player.is_jumping, player.jump_count)
+
+    return 1920, 1080, new_entities, player
+
+
+def _scale_entity(entity, scalar):
+    entity.hitbox = pygame.Rect(
+        entity.hitbox.x*scalar,
+        entity.hitbox.y*scalar,
+        entity.hitbox.w*scalar,
+        entity.hitbox.h*scalar
+    )
+    return entity

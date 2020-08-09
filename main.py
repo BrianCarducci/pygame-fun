@@ -3,6 +3,7 @@ import pygame
 import pyautogui
 
 from setup import setup
+from setup import change_resolution
 from state import State
 from entities.player import Player
 
@@ -46,12 +47,14 @@ def main():
                         game_state = State.PLAYING
                         text_surface = None
                 if event.key == pygame.K_ESCAPE:
-                    if WINDOW_WIDTH == 2560:
-                        WINDOW_WIDTH, WINDOW_HEIGHT = 1920, 1080
-                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-                    else:
-                        WINDOW_WIDTH, WINDOW_HEIGHT = 2560, 1440
-                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    WINDOW_WIDTH, WINDOW_HEIGHT, entities, player = change_resolution(WINDOW_WIDTH, 1920, entities, player)
+                    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    # if WINDOW_WIDTH == 2560:
+                    #     WINDOW_WIDTH, WINDOW_HEIGHT = 1920, 1080
+                    #     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    # else:
+                    #     WINDOW_WIDTH, WINDOW_HEIGHT = 2560, 1440
+                    #     win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
             # if event.type == pygame.VIDEORESIZE:
             #     WINDOW_WIDTH = event.w
             #     WINDOW_HEIGHT = event.h
@@ -61,6 +64,8 @@ def main():
         player.check_player_collisions(entities)
         if player.is_dead(WINDOW_HEIGHT):
             game_state, GAME_FONT, background, player, entities = setup(WINDOW_WIDTH, WINDOW_HEIGHT)
+            background_x = 0
+            background_x2 = background.get_width()
 
         background_x, background_x2 = player.check_player_actions(entities, keys, game_state, WINDOW_WIDTH, background_x, background_x2)
 
