@@ -37,30 +37,24 @@ def setup(window_width, window_height):
 
     return game_state, font, bg, player, entities
 
-def change_resolution(curr_window_width, new_window_width, entities, player):
-    scalar = 0
-    if curr_window_width == 2560 and new_window_width == 1920:
-        scalar = 0.75
-    new_entities = [_scale_entity(entity, scalar) for entity in entities]
-    # for entity in entities:
-        # entity.hitbox = pygame.rect(
-        #     entity.hitbox.x*scalar,
-        #     entity.hitbox.y*scalar,
-        #     entity.hitbox.w*scalar,
-        #     entity.hitbox.h*scalar
-        # )
-        # if isinstance(entity, Platform):
-        #     entity = Platform(pygame.Rect(entity.hitbox.x*scalar, entity.hitbox.y*scalar, entity.hitbox.w*scalar, entity.hitbox.h*scalar), entity.vel, entity.sprite, entity.stage_location)
-    player = Player(pygame.Rect(player.hitbox.x*scalar, player.hitbox.y*scalar, player.hitbox.w*scalar, player.hitbox.h*scalar), player.vel, player.sprite, player.stage_location*scalar, player.is_jumping, player.jump_count)
 
-    return 1920, 1080, new_entities, player
+def change_resolution(curr_window_width, new_window_width, curr_window_height, new_window_height, entities, player):
+    scalar_x = new_window_width / curr_window_width
+    scalar_y = new_window_height / curr_window_height
+
+    scaled_entities = [_scale_entity(entity, scalar_x, scalar_y) for entity in entities]
+
+    scaled_player = Player(pygame.Rect(player.hitbox.x*scalar_x, player.hitbox.y*scalar_y, player.hitbox.w*scalar_x, player.hitbox.h*scalar_y), player.vel*scalar_x, player.sprite, player.stage_location*scalar_x, player.is_jumping, player.jump_count)
+
+    return new_window_width, new_window_height, scaled_entities, scaled_player
 
 
-def _scale_entity(entity, scalar):
+def _scale_entity(entity, scalar_x, scalar_y):
     entity.hitbox = pygame.Rect(
-        entity.hitbox.x*scalar,
-        entity.hitbox.y*scalar,
-        entity.hitbox.w*scalar,
-        entity.hitbox.h*scalar
+        entity.hitbox.x * scalar_x,
+        entity.hitbox.y * scalar_y,
+        entity.hitbox.w * scalar_x,
+        entity.hitbox.h * scalar_y
     )
+    entity.vel *= scalar_x
     return entity
