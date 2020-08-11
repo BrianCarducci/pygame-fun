@@ -11,10 +11,11 @@ class Player(Entity):
     colliding_entity = None
     collisions = []
 
-    def __init__(self, hitbox, vel, sprite, stage_location, is_jumping, jump_count):
+    def __init__(self, hitbox, vel, sprite, stage_location, is_jumping, jump_count, is_falling):
         self.stage_location = stage_location
         self.is_jumping = is_jumping
         self.jump_count = jump_count
+        self.is_falling = is_falling
         super().__init__(hitbox, vel, sprite)
 
     def check_player_actions(self, entities, keys, game_state, screen_width, background_x, background_x2):
@@ -23,7 +24,10 @@ class Player(Entity):
             
             # Check if falling
             if not self.is_jumping and {"collision_side": "bottom", "colliding_entity": Platform} not in self.collisions:
-                self.hitbox.y += 10
+                self.is_falling = True
+                self.hitbox.y += self.jump_count
+            else:
+                self.is_falling = False
 
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 if {"collision_side": "left", "colliding_entity": Platform} not in self.collisions:
@@ -42,7 +46,7 @@ class Player(Entity):
                     background_x -= self.vel
                     background_x2 -= self.vel
 
-            if not self.is_jumping:
+            if not self.is_jumping and not self.is_falling:
                 if keys[pygame.K_SPACE]:
                     self.is_jumping = True
             else:
@@ -64,7 +68,7 @@ class Player(Entity):
         self.collisions = []
         for entity in entities:
             if self.hitbox.colliderect(entity.hitbox):
-                if self.hitbox.bottom <= entity.hitbox.top + 10:
+                if self.hitbox.bottom <= entity.hitbox.top + self.jump_count:
                     self.collision_side = "bottom"
                 elif self.hitbox.right > entity.hitbox.right:
                     self.collision_side = "left"

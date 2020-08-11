@@ -33,7 +33,8 @@ def setup(window_width, window_height):
 
     #set up player
     # player = Player(window_width//2, y, width, height, vel, (255, 0, 0), entities, window_width//2, False, 10)
-    player = Player(pygame.Rect(window_width//2, floor_y - height - 200, width, height), vel, (255, 0, 0), window_width//2, False, 10)
+    player = Player(pygame.Rect(window_width//2, floor_y - height, width, height), vel, (255, 0, 0), window_width//2, False, 10, False)
+    # player = Player(pygame.Rect(window_width//2, floor_y - height, width, height), vel, (255, 0, 0), window_width//2, False, 10)
 
     return game_state, font, bg, player, entities
 
@@ -44,7 +45,7 @@ def change_resolution(curr_window_width, new_window_width, curr_window_height, n
 
     scaled_entities = [_scale_entity(entity, scalar_x, scalar_y) for entity in entities]
 
-    scaled_player = Player(pygame.Rect(player.hitbox.x*scalar_x, player.hitbox.y*scalar_y, player.hitbox.w*scalar_x, player.hitbox.h*scalar_y), player.vel*scalar_x, player.sprite, player.stage_location*scalar_x, player.is_jumping, player.jump_count)
+    scaled_player = Player(pygame.Rect(player.hitbox.x*scalar_x, player.hitbox.y*scalar_y, player.hitbox.w*scalar_x, player.hitbox.h*scalar_y), player.vel*scalar_x, player.sprite, player.stage_location*scalar_x, player.is_jumping, player.jump_count*scalar_y, player.is_falling)
 
     return new_window_width, new_window_height, scaled_entities, scaled_player
 
@@ -57,4 +58,5 @@ def _scale_entity(entity, scalar_x, scalar_y):
         entity.hitbox.h * scalar_y
     )
     entity.vel *= scalar_x
+
     return entity
