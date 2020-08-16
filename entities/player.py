@@ -11,9 +11,10 @@ class Player(Entity):
     colliding_entity = None
     collisions = []
 
-    def __init__(self, hitbox, vel, sprite, stage_location, is_jumping, jump_count, is_falling):
+    def __init__(self, hitbox, vel, sprite, stage_location, is_jumping, base_jump_count, jump_count, is_falling):
         self.stage_location = stage_location
         self.is_jumping = is_jumping
+        self.base_jump_count = base_jump_count
         self.jump_count = jump_count
         self.is_falling = is_falling
         super().__init__(hitbox, vel, sprite)
@@ -53,18 +54,19 @@ class Player(Entity):
                 if self.jump_count <= 0:
                     if {"collision_side": "bottom", "colliding_entity": Platform} in self.collisions:
                         self.is_jumping = False
-                        self.jump_count = 10
-                if self.jump_count >= -10 and self.is_jumping:
+                        self.jump_count = self.base_jump_count
+                if self.jump_count >= self.base_jump_count*-1 and self.is_jumping:
                     self.hitbox.y -= self.jump_count
                     self.jump_count -= 1
                 else:
                     self.is_jumping = False
-                    self.jump_count = 10
+                    self.jump_count = self.base_jump_count
                     
         return background_x, background_x2
 
 
     def check_player_collisions(self, entities):
+        print(self.vel)
         self.collisions = []
         for entity in entities:
             if self.hitbox.colliderect(entity.hitbox):

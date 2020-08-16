@@ -47,8 +47,12 @@ def main():
                         game_state = State.PLAYING
                         text_surface = None
                 if event.key == pygame.K_ESCAPE:
-                    WINDOW_WIDTH, WINDOW_HEIGHT, entities, player = change_resolution(WINDOW_WIDTH, 800, WINDOW_HEIGHT, 600, entities, player)
-                    win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    if WINDOW_WIDTH == 2560:
+                        WINDOW_WIDTH, WINDOW_HEIGHT, entities, player = change_resolution(WINDOW_WIDTH, 800, WINDOW_HEIGHT, 600, entities, player)
+                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+                    else:
+                        WINDOW_WIDTH, WINDOW_HEIGHT, entities, player = change_resolution(WINDOW_WIDTH, 2560, WINDOW_HEIGHT, 1920, entities, player)
+                        win = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
                 
         keys = pygame.key.get_pressed()
 
